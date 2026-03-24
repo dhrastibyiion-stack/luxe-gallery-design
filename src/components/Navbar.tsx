@@ -30,6 +30,7 @@ const Navbar = () => {
             <a
               key={link}
               href={`#${link.toLowerCase().replace(" ", "-")}`}
+              onClick={(e) => scrollToSection(e, link)}
               className="font-body text-sm tracking-widest uppercase text-muted-foreground hover:text-foreground transition-colors duration-300"
             >
               {link}
