@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
@@ -6,6 +6,16 @@ const navLinks = ["Shop", "Our Story", "Ingredients", "Journal"];
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const scrollToSection = useCallback((e: React.MouseEvent<HTMLAnchorElement>, link: string) => {
+    e.preventDefault();
+    const id = link.toLowerCase().replace(" ", "-");
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    setIsOpen(false);
+  }, []);
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
