@@ -1,11 +1,23 @@
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 import heroImage from "@/assets/hero-beauty.jpg";
 
 const HeroSection = () => {
+  const sectionRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
+  const overlayOpacity = useTransform(scrollYProgress, [0, 1], [0.4, 0.7]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
+
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden">
-      {/* Background Image */}
-      <div className="absolute inset-0">
+    <section ref={sectionRef} className="relative min-h-screen flex items-center overflow-hidden">
+      {/* Parallax Background Image */}
+      <motion.div className="absolute inset-0" style={{ y: backgroundY, scale }}>
         <img
           src={heroImage}
           alt="Botanica natural beauty products collection"
@@ -13,11 +25,11 @@ const HeroSection = () => {
           width={1920}
           height={1080}
         />
-        <div className="absolute inset-0 bg-background/40" />
-      </div>
+        <motion.div className="absolute inset-0 bg-background" style={{ opacity: overlayOpacity }} />
+      </motion.div>
 
-      {/* Content */}
-      <div className="relative container mx-auto px-6 pt-24">
+      {/* Content with slower parallax */}
+      <motion.div className="relative container mx-auto px-6 pt-24" style={{ y: contentY }}>
         <div className="max-w-2xl">
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -61,7 +73,7 @@ const HeroSection = () => {
             Explore Collection
           </motion.a>
         </div>
-      </div>
+      </motion.div>
 
       {/* Scroll indicator */}
       <motion.div
