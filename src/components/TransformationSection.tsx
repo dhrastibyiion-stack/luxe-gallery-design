@@ -1,4 +1,4 @@
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef, useState, useCallback } from "react";
 import before1 from "@/assets/before-1.jpg";
 import after1 from "@/assets/after-1.jpg";
@@ -150,11 +150,21 @@ const BeforeAfterSlider = ({
 
 const TransformationSection = () => {
   const headerRef = useRef(null);
+  const sectionRef = useRef(null);
   const headerInView = useInView(headerRef, { once: true, margin: "-100px" });
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+  const floatY = useTransform(scrollYProgress, [0, 1], [80, -40]);
 
   return (
-    <section id="transformations" className="py-32 px-6 bg-background">
-      <div className="container mx-auto">
+    <section ref={sectionRef} id="transformations" className="py-32 px-6 bg-background relative overflow-hidden">
+      <motion.div
+        className="absolute -bottom-10 -left-32 w-96 h-96 rounded-full bg-accent/20 blur-3xl"
+        style={{ y: floatY }}
+      />
+      <div className="container mx-auto relative z-10">
         <motion.div
           ref={headerRef}
           initial={{ opacity: 0, y: 40 }}

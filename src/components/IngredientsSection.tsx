@@ -1,4 +1,4 @@
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import ingredientLavender from "@/assets/ingredient-lavender.png";
 import ingredientRosehip from "@/assets/ingredient-rosehip.png";
@@ -88,11 +88,27 @@ const IngredientCard = ({
 
 const IngredientsSection = () => {
   const headerRef = useRef(null);
+  const sectionRef = useRef(null);
   const headerInView = useInView(headerRef, { once: true, margin: "-100px" });
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+  const floatY1 = useTransform(scrollYProgress, [0, 1], [60, -60]);
+  const floatY2 = useTransform(scrollYProgress, [0, 1], [40, -80]);
 
   return (
-    <section id="ingredients" className="py-32 px-6 bg-muted/30">
-      <div className="container mx-auto">
+    <section ref={sectionRef} id="ingredients" className="py-32 px-6 bg-muted/30 relative overflow-hidden">
+      {/* Parallax decorative elements */}
+      <motion.div
+        className="absolute top-20 -left-20 w-64 h-64 rounded-full bg-primary/5 blur-3xl"
+        style={{ y: floatY1 }}
+      />
+      <motion.div
+        className="absolute bottom-20 -right-20 w-80 h-80 rounded-full bg-accent/30 blur-3xl"
+        style={{ y: floatY2 }}
+      />
+      <div className="container mx-auto relative z-10">
         <motion.div
           ref={headerRef}
           initial={{ opacity: 0, y: 40 }}
