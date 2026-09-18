@@ -1,11 +1,17 @@
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ShoppingBag, User } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { useCart } from "@/hooks/useCart";
+import { useAuth } from "@/hooks/useAuth";
 
 const navLinks = ["Shop", "Our Story", "Ingredients", "Journal"];
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { count, setIsOpen: setCartOpen } = useCart();
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   const scrollToSection = useCallback((e: React.MouseEvent<HTMLAnchorElement>, link: string) => {
     e.preventDefault();
@@ -19,10 +25,13 @@ const Navbar = () => {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
-      <div className="container mx-auto flex items-center justify-between py-5 px-6">
-        <a href="/" className="font-display text-2xl md:text-3xl font-light tracking-wider text-foreground">
+      <div className="container mx-auto flex items-center justify-between py-4 px-5 sm:px-6 md:py-5">
+        <Link
+          to="/"
+          className="font-display text-xl font-light tracking-wider text-foreground sm:text-2xl md:text-3xl"
+        >
           BOTANICA
-        </a>
+        </Link>
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-10">
@@ -38,13 +47,34 @@ const Navbar = () => {
           ))}
         </div>
 
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden text-foreground"
-          aria-label="Toggle menu"
-        >
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        <div className="flex items-center gap-1">
+          <button
+            onClick={() => navigate(user ? "/account" : "/auth")}
+            aria-label={user ? "Your account" : "Sign in"}
+            className="flex h-11 w-11 items-center justify-center text-foreground"
+          >
+            <User size={20} />
+          </button>
+          <button
+            onClick={() => setCartOpen(true)}
+            aria-label="Open bag"
+            className="relative flex h-11 w-11 items-center justify-center text-foreground"
+          >
+            <ShoppingBag size={20} />
+            {count > 0 && (
+              <span className="absolute right-1 top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 font-body text-[10px] text-primary-foreground">
+                {count}
+              </span>
+            )}
+          </button>
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="flex h-11 w-11 items-center justify-center text-foreground md:hidden"
+            aria-label="Toggle menu"
+          >
+            {isOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Nav */}
@@ -54,15 +84,15 @@ const Navbar = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-background border-t border-border"
+            className="md:hidden overflow-hidden bg-background border-t border-border"
           >
-            <div className="flex flex-col items-center py-8 gap-6">
+            <div className="flex flex-col items-center py-6 gap-1">
               {navLinks.map((link) => (
                 <a
                   key={link}
                   href={`#${link.toLowerCase().replace(" ", "-")}`}
                   onClick={(e) => scrollToSection(e, link)}
-                  className="font-body text-sm tracking-widest uppercase text-muted-foreground hover:text-foreground transition-colors"
+                  className="w-full py-3 text-center font-body text-sm tracking-widest uppercase text-muted-foreground hover:text-foreground transition-colors"
                 >
                   {link}
                 </a>
