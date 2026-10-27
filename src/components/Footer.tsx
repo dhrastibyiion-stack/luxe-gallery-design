@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Footer = () => {
   return (
     <footer className="border-t border-border py-16 px-6">
@@ -17,14 +19,19 @@ const Footer = () => {
               Navigate
             </p>
             <div className="flex flex-col gap-3">
-              {["Shop", "Our Story", "Ingredients", "Journal"].map((link) => (
-                <a
-                  key={link}
-                  href={`#${link.toLowerCase().replace(" ", "-")}`}
+              {[
+                { label: "Shop", to: "/shop" },
+                { label: "Our Story", to: "/our-story" },
+                { label: "Ingredients", to: "/ingredients" },
+                { label: "Journal", to: "/journal" },
+              ].map((link) => (
+                <Link
+                  key={link.label}
+                  to={link.to}
                   className="font-body text-sm font-light text-foreground/70 hover:text-foreground transition-colors"
                 >
-                  {link}
-                </a>
+                  {link.label}
+                </Link>
               ))}
             </div>
           </div>
