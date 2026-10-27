@@ -13,7 +13,7 @@ import { imageForKey } from "@/lib/productImages";
 import { useCart } from "@/hooks/useCart";
 import { toast } from "sonner";
 
-type Product = {
+export type Product = {
   id: string;
   name: string;
   category: string;
@@ -24,7 +24,7 @@ type Product = {
   image: string;
 };
 
-const ProductCard = ({
+export const ProductCard = ({
   product,
   index,
   onShopNow,
@@ -77,7 +77,7 @@ const ProductCard = ({
   );
 };
 
-const ProductDetailModal = ({
+export const ProductDetailModal = ({
   product,
   open,
   onOpenChange,

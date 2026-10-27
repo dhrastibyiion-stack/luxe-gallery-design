@@ -1,5 +1,6 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-beauty.jpg";
 
 const HeroSection = () => {
@@ -63,15 +64,19 @@ const HeroSection = () => {
             Pure ingredients, timeless rituals.
           </motion.p>
 
-          <motion.a
-            href="#shop"
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.9 }}
-            className="inline-block font-body text-xs tracking-[0.25em] uppercase border border-foreground px-10 py-4 text-foreground hover:bg-foreground hover:text-background transition-all duration-500"
+            className="inline-block"
           >
-            Explore Collection
-          </motion.a>
+            <Link
+              to="/shop"
+              className="inline-block font-body text-xs tracking-[0.25em] uppercase border border-foreground px-10 py-4 text-foreground hover:bg-foreground hover:text-background transition-all duration-500"
+            >
+              Explore Collection
+            </Link>
+          </motion.div>
         </div>
       </motion.div>
 

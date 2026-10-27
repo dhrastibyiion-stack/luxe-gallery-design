@@ -1,27 +1,23 @@
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ShoppingBag, User } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink as RouterNavLink, useNavigate } from "react-router-dom";
+import { cn } from "@/lib/utils";
 import { useCart } from "@/hooks/useCart";
 import { useAuth } from "@/hooks/useAuth";
 
-const navLinks = ["Shop", "Our Story", "Ingredients", "Journal"];
+const navLinks = [
+  { label: "Shop", to: "/shop" },
+  { label: "Our Story", to: "/our-story" },
+  { label: "Ingredients", to: "/ingredients" },
+  { label: "Journal", to: "/journal" },
+];
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { count, setIsOpen: setCartOpen } = useCart();
   const { user } = useAuth();
   const navigate = useNavigate();
-
-  const scrollToSection = useCallback((e: React.MouseEvent<HTMLAnchorElement>, link: string) => {
-    e.preventDefault();
-    const id = link.toLowerCase().replace(" ", "-");
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-    setIsOpen(false);
-  }, []);
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
@@ -36,14 +32,18 @@ const Navbar = () => {
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-10">
           {navLinks.map((link) => (
-            <a
-              key={link}
-              href={`#${link.toLowerCase().replace(" ", "-")}`}
-              onClick={(e) => scrollToSection(e, link)}
-              className="font-body text-sm tracking-widest uppercase text-muted-foreground hover:text-foreground transition-colors duration-300"
+            <RouterNavLink
+              key={link.to}
+              to={link.to}
+              className={({ isActive }) =>
+                cn(
+                  "font-body text-sm tracking-widest uppercase transition-colors duration-300 hover:text-foreground",
+                  isActive ? "text-foreground" : "text-muted-foreground"
+                )
+              }
             >
-              {link}
-            </a>
+              {link.label}
+            </RouterNavLink>
           ))}
         </div>
 
@@ -88,14 +88,19 @@ const Navbar = () => {
           >
             <div className="flex flex-col items-center py-6 gap-1">
               {navLinks.map((link) => (
-                <a
-                  key={link}
-                  href={`#${link.toLowerCase().replace(" ", "-")}`}
-                  onClick={(e) => scrollToSection(e, link)}
-                  className="w-full py-3 text-center font-body text-sm tracking-widest uppercase text-muted-foreground hover:text-foreground transition-colors"
+                <RouterNavLink
+                  key={link.to}
+                  to={link.to}
+                  onClick={() => setIsOpen(false)}
+                  className={({ isActive }) =>
+                    cn(
+                      "w-full py-3 text-center font-body text-sm tracking-widest uppercase transition-colors hover:text-foreground",
+                      isActive ? "text-foreground" : "text-muted-foreground"
+                    )
+                  }
                 >
-                  {link}
-                </a>
+                  {link.label}
+                </RouterNavLink>
               ))}
             </div>
           </motion.div>
