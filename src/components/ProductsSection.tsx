@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
-import { imageForKey } from "@/lib/productImages";
+import { imageForKey, galleryForKey } from "@/lib/productImages";
 import { useCart } from "@/hooks/useCart";
 import { toast } from "sonner";
 
@@ -51,8 +51,18 @@ export const ProductCard = ({
           loading="lazy"
           width={800}
           height={1000}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          className="w-full h-full object-cover transition-opacity duration-700 group-hover:opacity-0"
         />
+        {product.gallery[1] && (
+          <img
+            src={product.gallery[1]}
+            alt={`${product.name} alternate view`}
+            loading="lazy"
+            width={800}
+            height={1000}
+            className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-700 group-hover:opacity-100"
+          />
+        )}
         <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/5 transition-colors duration-500" />
         <div className="absolute bottom-0 inset-x-0 p-4 md:opacity-0 md:translate-y-2 md:transition-all md:duration-300 md:group-hover:opacity-100 md:group-hover:translate-y-0">
           <Button
@@ -87,6 +97,13 @@ export const ProductDetailModal = ({
   onOpenChange: (open: boolean) => void;
 }) => {
   const { addItem, setIsOpen } = useCart();
+  const [imgIndex, setImgIndex] = useState(0);
+  const images = product?.gallery.length ? product.gallery : product ? [product.image] : [];
+
+  useEffect(() => {
+    setImgIndex(0);
+  }, [product?.id]);
+
   if (!product) return null;
 
   const addToCart = () => {
@@ -107,11 +124,30 @@ export const ProductDetailModal = ({
         <div className="grid md:grid-cols-2">
           <div className="aspect-square bg-muted">
             <img
-              src={product.image}
-              alt={product.name}
-              className="h-full w-full object-cover"
+              src={images[imgIndex] ?? product.image}
+              alt={`${product.name} view ${imgIndex + 1}`}
+              loading="lazy"
+              className="h-full w-full object-cover transition-opacity duration-300"
             />
           </div>
+          {images.length > 1 && (
+            <div className="absolute bottom-4 left-4 flex gap-2">
+              {images.map((img, i) => (
+                <button
+                  key={img}
+                  onClick={() => setImgIndex(i)}
+                  aria-label={`View image ${i + 1}`}
+                  className={`h-12 w-12 overflow-hidden border transition-all duration-300 ${
+                    i === imgIndex
+                      ? "border-foreground opacity-100"
+                      : "border-background/60 opacity-70 hover:opacity-100"
+                  }`}
+                >
+                  <img src={img} alt="" className="h-full w-full object-cover" />
+                </button>
+              ))}
+            </div>
+          )}
           <div className="flex flex-col justify-between p-6 md:p-8">
             <div>
               <DialogHeader className="mb-4 space-y-1 text-left">
