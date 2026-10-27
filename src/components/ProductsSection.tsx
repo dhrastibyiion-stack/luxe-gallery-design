@@ -22,6 +22,7 @@ export type Product = {
   ingredients: string;
   size: string;
   image: string;
+  gallery: string[];
 };
 
 export const ProductCard = ({
