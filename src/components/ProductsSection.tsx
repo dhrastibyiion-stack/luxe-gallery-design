@@ -54,7 +54,7 @@ export const ProductCard = ({
           height={1000}
           className="w-full h-full object-cover transition-opacity duration-700 group-hover:opacity-0"
         />
-        {product.gallery[1] && (
+        {product.gallery?.[1] && (
           <img
             src={product.gallery[1]}
             alt={`${product.name} alternate view`}
@@ -99,7 +99,7 @@ export const ProductDetailModal = ({
 }) => {
   const { addItem, setIsOpen } = useCart();
   const [imgIndex, setImgIndex] = useState(0);
-  const images = product?.gallery.length ? product.gallery : product ? [product.image] : [];
+  const images = product?.gallery?.length ? product.gallery : product ? [product.image] : [];
 
   useEffect(() => {
     setImgIndex(0);
@@ -221,6 +221,7 @@ const ProductsSection = () => {
             ingredients: p.ingredients,
             size: p.size,
             image: imageForKey(p.image_key),
+            gallery: galleryForKey(p.image_key),
           }))
         );
       });
