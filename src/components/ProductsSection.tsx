@@ -54,7 +54,7 @@ export const ProductCard = ({
           height={1000}
           className="w-full h-full object-cover transition-opacity duration-700 group-hover:opacity-0"
         />
-        {product.gallery[1] && (
+        {product.gallery?.[1] && (
           <img
             src={product.gallery[1]}
             alt={`${product.name} alternate view`}
