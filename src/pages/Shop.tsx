@@ -53,6 +53,7 @@ const Shop = () => {
             ingredients: p.ingredients,
             size: p.size,
             image: imageForKey(p.image_key),
+            gallery: galleryForKey(p.image_key),
           }))
         );
       });
