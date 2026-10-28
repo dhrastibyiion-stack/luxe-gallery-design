@@ -8,7 +8,7 @@ import {
   type Product,
 } from "@/components/ProductsSection";
 import { supabase } from "@/integrations/supabase/client";
-import { imageForKey } from "@/lib/productImages";
+import { galleryForKey, imageForKey } from "@/lib/productImages";
 import productOil from "@/assets/product-oil.jpg";
 
 const perks = [
