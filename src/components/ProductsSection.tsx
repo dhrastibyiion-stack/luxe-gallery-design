@@ -99,7 +99,7 @@ export const ProductDetailModal = ({
 }) => {
   const { addItem, setIsOpen } = useCart();
   const [imgIndex, setImgIndex] = useState(0);
-  const images = product?.gallery.length ? product.gallery : product ? [product.image] : [];
+  const images = product?.gallery?.length ? product.gallery : product ? [product.image] : [];
 
   useEffect(() => {
     setImgIndex(0);
