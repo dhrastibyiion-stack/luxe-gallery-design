@@ -1,4 +1,6 @@
 # Roadmap
 
 - [ ] Connect BYOK Stripe to bag checkout (user chose own Stripe account) — enable, then checkout flow + webhook
-- [ ] Shop: add more images per product (generate per-product photos, gallery in product modal + hover swap)
+- [x] Shop: add more images per product (gallery in product modal + hover swap) — done
+- [x] Ritual Finder: AI routine recommendation page (/routine) + skincare-advisor edge function — done
+- [x] Write a short portfolio description of this project for the user — delivered in chat
