@@ -11,6 +11,7 @@ const navLinks = [
   { label: "Our Story", to: "/our-story" },
   { label: "Ingredients", to: "/ingredients" },
   { label: "Journal", to: "/journal" },
+  { label: "Ritual", to: "/routine" },
 ];
 
 const Navbar = () => {
